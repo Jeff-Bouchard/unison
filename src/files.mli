@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/files.mli *)
-(* Copyright 1999-2016, Benjamin C. Pierce (see COPYING for details) *)
+(* Copyright 1999-2015, Benjamin C. Pierce (see COPYING for details) *)
 
 (* As usual, these functions should only be called by the client (i.e., in   *)
 (* the same address space as the user interface).                            *)
@@ -78,8 +78,8 @@ val merge :
   -> Path.t                       (* path to merge *)
   -> Common.updateItem            (* differences from the archive *)
   -> Uutil.File.t                 (* id for showing progress of transfer *)
-  -> (string->string->bool)       (* function to display the (title and) result
-                                     and ask user for confirmation (when -batch
-                                     is true, the function should not ask any
-                                     questions and should always return true) *)
+  -> (string->string->bool)       (* function to display the (title and) result 
+				     and ask user for confirmation (when -batch 
+				     is true, the function should not ask any 
+				     questions and should always return true) *)
   -> unit

@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/system/system_generic.ml *)
-(* Copyright 1999-2016, Benjamin C. Pierce
+(* Copyright 1999-2015, Benjamin C. Pierce 
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -57,8 +57,7 @@ let opendir f =
 let readdir = Unix.readdir
 let closedir = Unix.closedir
 let readlink = Unix.readlink
-(* BCP 5/16: Eta-expand for backward compatibility with OCaml <=4.02 *)
-let symlink s1 s2 = Unix.symlink s1 s2
+let symlink = Unix.symlink
 let chdir = Sys.chdir
 let getcwd = Sys.getcwd
 

@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/fingerprint.ml *)
-(* Copyright 1999-2016, Benjamin C. Pierce
+(* Copyright 1999-2015, Benjamin C. Pierce 
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,12 +19,12 @@
 (* INCREMENT "UPDATE.ARCHIVEFORMAT"                                          *)
 type t = string
 
-let pseudo_prefix = "LEN"
+let pseudo_prefix = "LEN" 
 
 let pseudo path len = pseudo_prefix ^ (Uutil.Filesize.toString len) ^ "@" ^
                       (Digest.string (Path.toString path))
-
-let ispseudo f = Util.startswith f pseudo_prefix
+                                    
+let ispseudo f = Util.startswith f pseudo_prefix 
 
 (* Assumes that (fspath, path) is a file and gives its ``digest '', that is  *)
 (* a short string of cryptographic quality representing it.                  *)
@@ -75,14 +75,14 @@ let hexaCode theChar =
 let toString md5 =
   if ispseudo md5 then md5 else begin
     let length = String.length md5 in
-    let string = Bytes.create (length * 2) in
+    let string = String.create (length * 2) in
     for i=0 to (length - 1) do
       let c1, c2 =  hexaCode (md5.[i]) in
       string.[2*i] <- c1;
       string.[2*i + 1] <- c2;
     done;
     string
-  end
+  end 
 
 let string = Digest.string
 
@@ -100,3 +100,4 @@ let hash d =
   end
 
 let equal (d : string) d' = d = d'
+

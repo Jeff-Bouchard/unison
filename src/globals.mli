@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/globals.mli *)
-(* Copyright 1999-2016, Benjamin C. Pierce (see COPYING for details) *)
+(* Copyright 1999-2015, Benjamin C. Pierce (see COPYING for details) *)
 
 (* Global variables and functions needed by top-level modules and user       *)
 (* interfaces                                                                *)
@@ -61,17 +61,17 @@ val allHostsIter : (string -> unit Lwt.t) -> unit Lwt.t
 (* Run a command on all hosts in roots and collect results                   *)
 val allHostsMap : (string -> 'a) -> 'a list
 
-(* Make sure that the server has the same settings for its preferences as we
-   do locally.  Should be called whenever the local preferences have
-   changed.  (This isn't conceptually a part of this module, but it can't
-   live in the Prefs module because that would introduce a circular
+(* Make sure that the server has the same settings for its preferences as we 
+   do locally.  Should be called whenever the local preferences have         
+   changed.  (This isn't conceptually a part of this module, but it can't    
+   live in the Prefs module because that would introduce a circular          
    dependency.)                                                              *)
 val propagatePrefs : unit -> unit Lwt.t
 
 (* User preference: when true, don't ask any questions *)
 val batch : bool Prefs.t
 
-(* User preference: ask for confirmation when propagating a deletion of
+(* User preference: ask for confirmation when propagating a deletion of 
    a whole replica or top-level path *)
 val confirmBigDeletes : bool Prefs.t
 
@@ -80,14 +80,13 @@ val shouldIgnore : 'a Path.path -> bool
 val shouldMerge : 'a Path.path -> bool
 val ignorePred : Pred.t
 val ignorenotPred : Pred.t
-val atomic : Pred.t
 
 (* Be careful calling this to add new patterns to be ignored: Its
    value does NOT persist when a new profile is loaded, so it has to
    be called again whenever this happens. *)
 val addRegexpToIgnore : string -> unit
 
-(* Merging commands *)
+(* Merging commands *)  
 val mergeCmdForPath : Path.t -> string
 
 (* Internal prefs, needed to know whether to do filenames checks *)

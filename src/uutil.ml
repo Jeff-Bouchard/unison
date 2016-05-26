@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/uutil.ml *)
-(* Copyright 1999-2016, Benjamin C. Pierce
+(* Copyright 1999-2015, Benjamin C. Pierce 
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 
 let myName = ProjectInfo.myName
 
-let myVersion = ProjectInfo.myVersion ^ " (ocaml " ^ Sys.ocaml_version ^ ")"
+let myVersion = ProjectInfo.myVersion
 
 let myMajorVersion = ProjectInfo.myMajorVersion
 
@@ -113,7 +113,7 @@ let showUpdateStatus path =
 
 let bufsize = 16384
 let bufsizeFS = Filesize.ofInt bufsize
-let buf = Bytes.create bufsize
+let buf = String.create bufsize
 
 let readWrite source target notify =
   let len = ref 0 in

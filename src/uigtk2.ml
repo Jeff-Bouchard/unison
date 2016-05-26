@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/uigtk2.ml *)
-(* Copyright 1999-2016, Benjamin C. Pierce
+(* Copyright 1999-2015, Benjamin C. Pierce 
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -209,7 +209,7 @@ let code =
      0x0078; 0x0079; 0x007A; 0x007B; 0x007C; 0x007D; 0x007E; 0x007F;
      0x20AC; 0x1234; 0x201A; 0x0192; 0x201E; 0x2026; 0x2020; 0x2021;
      0x02C6; 0x2030; 0x0160; 0x2039; 0x0152; 0x1234; 0x017D; 0x1234;
-     0x1234; 0x2018; 0x2019; 0x201C; 0x201D; 0x2022; 0x2013; 0x2016;
+     0x1234; 0x2018; 0x2019; 0x201C; 0x201D; 0x2022; 0x2013; 0x2015;
      0x02DC; 0x2122; 0x0161; 0x203A; 0x0153; 0x1234; 0x017E; 0x0178;
      0x00A0; 0x00A1; 0x00A2; 0x00A3; 0x00A4; 0x00A5; 0x00A6; 0x00A7;
      0x00A8; 0x00A9; 0x00AA; 0x00AB; 0x00AC; 0x00AD; 0x00AE; 0x00AF;
@@ -2570,7 +2570,7 @@ let messageBox ~title ?(action = fun t -> t#destroy) message =
 
 (* twoBoxAdvanced: Display a message in a window and wait for the user
    to hit one of two buttons.  Return true if the first button is
-   chosen, false if the second button is chosen. Also has a button for
+   chosen, false if the second button is chosen. Also has a button for 
    showing more details to the user in a messageBox dialog *)
 let twoBoxAdvanced
       ~parent ~title ~message ~longtext ~advLabel ~astock ~bstock =
@@ -3527,7 +3527,7 @@ lst_store#set ~row ~column:c_path path;
                   catch (fun () ->
                            Transport.transportItem
                              theSI.ri (Uutil.File.ofLine i)
-                             (fun title text ->
+                             (fun title text -> 
                                textDetailed := (Some text);
                                if Prefs.read Uicommon.confirmmerge then
                                  twoBoxAdvanced
@@ -3539,7 +3539,7 @@ lst_store#set ~row ~column:c_path path;
                                    ~advLabel:"View details..."
                                    ~astock:`YES
                                    ~bstock:`NO
-                               else
+                               else 
                                  true)
                            >>= (fun () ->
                              return Util.Succeeded))
@@ -3996,7 +3996,7 @@ lst_store#set ~row ~column:c_path path;
 
     let def_descl = "Right to Left" in
     let descl =
-      if init || loc1 = loc2 then def_descl else
+      if init || loc1 = loc2 then def_descr else
       Printf.sprintf "from %s to %s"
         (Unicode.protect loc2) (Unicode.protect loc1) in
     let right =
@@ -4007,12 +4007,10 @@ lst_store#set ~row ~column:c_path path;
     right#add_accelerator ~group:accel_group ~modi:[`SHIFT] GdkKeysyms._less;
     right#add_accelerator ~group:accel_group ~modi:[`SHIFT] GdkKeysyms._comma;
 
-    let skip =
-      actionMenu#add_image_item ~key:GdkKeysyms._slash ~callback:questionAction
+    grAdd grAction
+      (actionMenu#add_image_item ~key:GdkKeysyms._slash ~callback:questionAction
         ~image:((GMisc.image ~stock:`NO ~icon_size:`MENU ())#coerce)
-        "Do _Not Propagate Changes" in
-    grAdd grAction skip;
-    skip#add_accelerator ~group:accel_group ~modi:[`SHIFT] GdkKeysyms._minus;
+        "Do _Not Propagate Changes");
 
     let merge =
       actionMenu#add_image_item ~key:GdkKeysyms._m ~callback:mergeAction
@@ -4264,8 +4262,6 @@ let start _ =
     in
     ignore_result (tick ());
 
-    Os.createUnisonDir();
-    scanProfiles();
     let detectCmd = createToplevelWindow() in
 
     Uicommon.uiInit
@@ -4276,6 +4272,7 @@ let start _ =
       getFirstRoot
       getSecondRoot
       termInteract;
+    scanProfiles();
     detectCmd ();
 
     (* Display the ui *)

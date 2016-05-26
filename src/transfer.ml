@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/transfer.ml *)
-(* Copyright 1999-2016, Benjamin C. Pierce
+(* Copyright 1999-2015, Benjamin C. Pierce 
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -261,7 +261,7 @@ let send infd length showProgress transmit =
   let timer = Trace.startTimer "Sending file using generic transmission" in
   let bufSz = 8192 in
   let bufSzFS = Uutil.Filesize.ofInt 8192 in
-  let buf = Bytes.create bufSz in
+  let buf = String.create bufSz in
   let q = makeQueue 0 in
   let rec sendSlice length =
     if length > Uutil.Filesize.zero then begin
@@ -373,7 +373,7 @@ struct
      and eventually handles the buffer update. *)
   let blockIter infd f blockSize maxCount =
     let bufferSize = 8192 + blockSize in
-    let buffer = Bytes.create bufferSize in
+    let buffer = String.create bufferSize in
     let rec iter count offset length =
       if count = maxCount then
         count
@@ -454,7 +454,7 @@ struct
   (* For each transfer instruction, either output a string or copy one or
      several blocks from the old file. *)
   let rsyncDecompress blockSize infd outfd showProgress (data, pos, len) =
-    let decomprBuf = Bytes.create decomprBufSize in
+    let decomprBuf = String.create decomprBufSize in
     let progress = ref 0 in
     let rec copy length =
       if length > decomprBufSize then begin
@@ -712,7 +712,7 @@ struct
     in
 
     (* Create the compression buffer *)
-    let comprBuf = Bytes.create comprBufSize in
+    let comprBuf = String.create comprBufSize in
 
     (* If there is data waiting to be sent, transmit it as a STRING token *)
     let transmitString toBeSent offset =

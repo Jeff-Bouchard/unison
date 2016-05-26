@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/update.mli *)
-(* Copyright 1999-2016, Benjamin C. Pierce (see COPYING for details) *)
+(* Copyright 1999-2015, Benjamin C. Pierce (see COPYING for details) *)
 
 module NameMap : MyMap.S with type key = Name.t
 
@@ -16,7 +16,7 @@ type archive =
 val storeRootsName : unit -> unit
 
 (* Retrieve the actual names of the roots *)
-val getRootsName : unit -> string
+val getRootsName : unit -> string 
 
 (* Perform update detection. Optionally, takes as input the list of
    paths known not to be synchronized and a list of paths not to

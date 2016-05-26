@@ -763,7 +763,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" state="on" alignment="center" id="546">
                             <font key="font" metaFont="label"/>
-                            <string key="title">© Copyright 1999-2016.
+                            <string key="title">© Copyright 1999-2014.
 
 This software is licensed under the GNU General Public License.</string>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -892,7 +892,7 @@ This software is licensed under the GNU General Public License.</string>
                         <autoresizingMask key="autoresizingMask"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="555">
                             <font key="font" metaFont="smallSystem"/>
-                            <string key="title">The command-line tool is a small program that can be installed in a standard place on your computer (/usr/local/bin/unison) so Unison can easily be found. If you want to be able to synchronize files on this computer by running Unison on a remote computer, you should probably install it.
+                            <string key="title">The command-line tool is a small program that can be installed in a standard place on your computer (/usr/bin/unison) so Unison can easily be found. If you want to be able to synchronize files on this computer by running Unison on a remote computer, you should probably install it.
 
 If you don't install it now, you can do so later by choosing 'Install command-line tool' from the Unison menu.
 </string>

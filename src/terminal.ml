@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/terminal.ml *)
-(* Copyright 1999-2016, Benjamin C. Pierce
+(* Copyright 1999-2015, Benjamin C. Pierce 
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -222,7 +222,7 @@ let (>>=) = Lwt.bind
 (* Wait until there is input. If there is terminal input s,
    return Some s. Otherwise, return None. *)
 let rec termInput fdTerm fdInput =
-  let buf = Bytes.create 10000 in
+  let buf = String.create 10000 in
   let rec readPrompt () =
     Lwt_unix.read fdTerm buf 0 10000 >>= fun len ->
     if len = 0 then
@@ -244,7 +244,7 @@ let rec termInput fdTerm fdInput =
 
 (* Read messages from the terminal and use the callback to get an answer *)
 let handlePasswordRequests fdTerm callback =
-  let buf = Bytes.create 10000 in
+  let buf = String.create 10000 in
   let rec loop () =
     Lwt_unix.read fdTerm buf 0 10000 >>= (fun len ->
       if len = 0 then

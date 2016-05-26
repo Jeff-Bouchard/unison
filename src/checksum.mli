@@ -1,11 +1,11 @@
 (* Unison file synchronizer: src/checksum.mli *)
-(* Copyright 1999-2016, Benjamin C. Pierce (see COPYING for details) *)
+(* Copyright 1999-2015, Benjamin C. Pierce (see COPYING for details) *)
 
 type t = int
 type u = int array
 
 val init : int             (* blockSize *)
-        -> u               (* pre-computed table *)
+        -> u               (* pre-computed table *) 
 
 val substring : string
              -> int        (* offset in string *)

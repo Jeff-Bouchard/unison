@@ -45,7 +45,7 @@ all:: INSTALL
 	checkin installremote
 
 .DELETE_ON_ERROR:
-# to avoid problems when something fails to run
+# to avoid problems when e.g. mkProjectInfo fails to run
 
 INSTALL: $(NAME)$(EXEC_EXT)
 # file isn't made for OS X, so check that it's there first
@@ -59,6 +59,16 @@ STATIC=false
 
 # NAME, VERSION, and MAJORVERSION, automatically generated
 -include Makefile.ProjectInfo
+
+Makefile.ProjectInfo: mkProjectInfo $(wildcard ../.bzr/branch/last-revision)
+	./mkProjectInfo > $@
+
+mkProjectInfo: mkProjectInfo.ml
+	ocamlc -o $@ unix.cma str.cma $^
+
+clean::
+	$(RM) mkProjectInfo
+	$(RM) Makefile.ProjectInfo
 
 ########################################################################
 ### Compilation rules
@@ -80,10 +90,6 @@ text:
 	$(MAKE) -C .. text
 
 doinstall: $(NAME)$(EXEC_EXT)
-	@if [ ! $(NAME) ]; then \
-	    echo "makefile variable NAME not bound"; \
-	    exit 1 \
-          ; fi 
 	-mv $(INSTALLDIR)/$(NAME)$(EXEC_EXT) /tmp/$(NAME)-$(shell echo $$$$)
 	cp $(NAME)$(EXEC_EXT) $(INSTALLDIR)
 	cp $(NAME)$(EXEC_EXT) $(INSTALLDIR)$(NAME)-$(MAJORVERSION)$(EXEC_EXT)
@@ -338,7 +344,7 @@ testmerge:
 .PHONY: tags
 
 tags:
-	-if [ -f "`which $(ETAGS)`" ]; then \
+	-if [ -f `which $(ETAGS)` ]; then \
 	    $(ETAGS) *.mli */*.mli *.ml */*.ml */*.m *.c */*.c *.txt \
           ; fi 
 

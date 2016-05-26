@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/fpcache.ml *)
-(* Copyright 1999-2016, Benjamin C. Pierce
+(* Copyright 1999-2015, Benjamin C. Pierce
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ let state = ref None
 
 let decompress st i path =
   let l = String.length path in
-  let s = Bytes.create (l + i) in
+  let s = String.create (l + i) in
   String.blit !st 0 s 0 i;
   String.blit path 0 s i l;
   st := s;
@@ -74,14 +74,14 @@ let read st ic =
   let fp1 = Digest.input ic in
   let fp2 = Digest.input ic in
   let headerSize = Marshal.header_size in
-  let header = Bytes.create headerSize in
+  let header = String.create headerSize in
   really_input ic header 0 headerSize;
   if fp1 <> Digest.string header then begin
     debug (fun () -> Util.msg "bad header checksum\n");
     raise End_of_file
   end;
   let dataSize = Marshal.data_size header 0 in
-  let s = Bytes.create (headerSize + dataSize) in
+  let s = String.create (headerSize + dataSize) in
   String.blit header 0 s 0 headerSize;
   really_input ic s headerSize dataSize;
   if fp2 <> Digest.string s then begin
@@ -240,7 +240,7 @@ let fastercheckUNSAFE =
     false "!skip computing fingerprints for new files (experts only!)"
     (  "THIS FEATURE IS STILL EXPERIMENTAL AND SHOULD BE USED WITH EXTREME CAUTION.  "
        ^ "\n\n"
-       ^ "When this flag is set to {\\tt true}, Unison will compute a 'pseudo-"
+       ^ "When this flag is set to {\\tt true}, Unison will compute a 'pseudo-" 
        ^ "fingerprint' the first time it sees a file (either because the file is "
        ^ "new or because Unison is running for the first time).  This enormously "
        ^ "speeds update detection, but it must be used with care, as it can cause "

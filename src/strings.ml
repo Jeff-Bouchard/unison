@@ -4,7 +4,7 @@
 let docs =
     ("about", ("About Unison", 
      "Unison File Synchronizer\n\
-      Version 2.49.543\n\
+      Version 2.48.3\n\
       \n\
       "))
 ::
@@ -1039,9 +1039,7 @@ let docs =
       \032  are using. In Unix, the default is to use $HOME/.unison. In Windows, if\n\
       \032  the environment variable USERPROFILE is defined, then the directory\n\
       \032  will be $USERPROFILE\\.unison; otherwise if HOME is defined, it will be\n\
-      \032  $HOME\\.unison; otherwise, it will be c:\\.unison. On OS X, $HOME/.unison\n\
-      \032  will be used if it is present, but $HOME/Library/Application\n\
-      \032  Support/Unison will be created and used by default.\n\
+      \032  $HOME\\.unison; otherwise, it will be c:\\.unison.\n\
       \n\
       \032  The archive file for each replica is found in the .unison directory on\n\
       \032  that replica's host. Profiles (described below) are always taken from\n\
@@ -1161,7 +1159,6 @@ let docs =
       Advanced options:\n\
       \032-addprefsto xxx    file to add new prefs to\n\
       \032-addversionno      add version number to name of unison on server\n\
-      \032-atomic xxx        add a pattern to the atomic list\n\
       \032-backup xxx        add a pattern to the backup list\n\
       \032-backupcurr xxx    add a pattern to the backupcurr list\n\
       \032-backupcurrnot xxx add a pattern to the backupcurrnot list\n\
@@ -1259,9 +1256,6 @@ let docs =
       \032         versions of unison to coexist conveniently on the same server:\n\
       \032         whichever version is run on the client, the same version will be\n\
       \032         selected on the server.\n\
-      \032  atomic xxx\n\
-      \032         This preference specifies paths for directories whose contents\n\
-      \032         will be considered as a group rather than individually.\n\
       \032  auto\n\
       \032         When set to true, this flag causes the user interface to skip\n\
       \032         asking for confirmations on non-conflicting changes. (More\n\
@@ -2099,10 +2093,10 @@ let docs =
       \n\
       Keeping Backups\n\
       \n\
-      \032  When Unison overwrites (or deletes) a file or directory while\n\
-      \032  propagating changes from the other replica, it can keep the old version\n\
-      \032  around as a backup. There are several preferences that control\n\
-      \032  precisely where these backups are stored and how they are named.\n\
+      \032  When Unison overwrites a file or directory by propagating a new version\n\
+      \032  from the other replica, it can keep the old version around as a backup.\n\
+      \032  There are several preferences that control precisely where these\n\
+      \032  backups are stored and how they are named.\n\
       \n\
       \032  To enable backups, you must give one or more backup preferences. Each\n\
       \032  of these has the form\n\
@@ -2778,8 +2772,8 @@ let docs =
       \n\
       "))
 ::
-    ("news", ("Changes in Version 2.49.543", 
-     "Changes in Version 2.49.543\n\
+    ("news", ("Changes in Version 2.48.3", 
+     "Changes in Version 2.48.3\n\
       \n\
       \032  Changes since 2.45:\n\
       \032    * Incorporated a patch from Christopher Zimmermann to replace the\n\
@@ -4545,7 +4539,7 @@ let docs =
       \n\
       References\n\
       \n\
-      \032  1. file:///Users/bcpierce/home/unison/doc/temp.html#ssh-win\n\
+      \032  1. file:///Users/bcpierce/current/unison/trunk/doc/temp.html#ssh-win\n\
       \032  2. http://pauillac.inria.fr/~maranget/hevea/index.html\n\
       "))
 ::

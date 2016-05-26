@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/fswatch.ml *)
-(* Copyright 1999-2016, Benjamin C. Pierce
+(* Copyright 1999-2015, Benjamin C. Pierce 
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -110,7 +110,7 @@ let quote s =
   let n = ref 0 in
   for i = 0 to l - 1 do if disallowed_char s.[i] then incr n done;
   if !n = 0 then s else begin
-    let q = Bytes.create (l + 2 * !n) in
+    let q = String.create (l + 2 * !n) in
     let j = ref 0 in
     let hex = "0123456789ABCDEF" in
     for i = 0 to l - 1 do
@@ -140,7 +140,7 @@ let unquote s =
       | 'A'..'F' -> Char.code c - Char.code 'A' + 10
       | _        -> invalid_arg "unquote"
     in
-    let u = Bytes.create (l - 2 * !n) in
+    let u = String.create (l - 2 * !n) in
     let j = ref 0 in
     for i = 0 to l - 2 * !n - 1 do
       let c = s.[!j] in
@@ -176,7 +176,7 @@ let useWatcher =
     "Unison uses a file watcher process, when available, to detect filesystem \
      changes; this is used to speed up update detection, and for continuous \
      synchronization (\\verb|-repeat watch| preference. Setting this flag to \
-     false disable the use of this process."
+     false disable the use of this process." 
 
 let printf o fmt =
   Printf.ksprintf
@@ -189,7 +189,7 @@ let printf o fmt =
 
 let read_line i =
   let b = Buffer.create 160 in
-  let buf = Bytes.create 160 in
+  let buf = String.create 160 in
   let start = ref 0 in
   let last = ref 0 in
   let rec read () =
@@ -218,7 +218,7 @@ let read_line i =
       read ()
   in
   read
-
+  
 (****)
 
 let path =
@@ -339,7 +339,7 @@ let emitCmd fmt =
   with e ->
     closeConnection ();
     raise e
-
+ 
 let rec readLine () =
   let c = currentConnection () in
   match c.last_line with

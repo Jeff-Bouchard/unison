@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/osx.ml *)
-(* Copyright 1999-2016, Benjamin C. Pierce
+(* Copyright 1999-2015, Benjamin C. Pierce 
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -108,7 +108,7 @@ let getID buf ofs =
     | _ -> `UNKNOWN
 
 let setInt4 v =
-  let s = Bytes.create 4 in
+  let s = String.create 4 in
   let set i =
     s.[i] <-
       Char.chr (Int64.to_int (Int64.logand 255L
@@ -126,7 +126,7 @@ let fail dataFspath dataPath doubleFspath msg =
               (Fspath.toPrintString (Fspath.concat dataFspath dataPath)) msg))
 
 let readDouble dataFspath dataPath doubleFspath inch len =
-  let buf = Bytes.create len in
+  let buf = String.create len in
   begin try
     really_input inch buf 0 len
   with End_of_file ->
@@ -267,7 +267,7 @@ let getFileInfos dataFspath dataPath typ =
                    protect (fun () ->
                      LargeFile.seek_in inch (Int64.add offset 16L);
                      let len = String.length resource_fork_empty_tag in
-                     let buf = Bytes.create len in
+                     let buf = String.create len in
                      really_input inch buf 0 len;
                      buf = resource_fork_empty_tag)
                      (fun () -> close_in_noerr inch)
@@ -310,7 +310,7 @@ let getFileInfos dataFspath dataPath typ =
                    end,
                    stats.Unix.LargeFile.st_mtime,
                    begin match Util.osType with
-                     `Win32 -> (* Was "stats.Unix.LargeFile.st_ctime", but
+                     `Win32 -> (* Was "stats.Unix.LargeFile.st_ctime", but 
                                   this was bogus: Windows ctimes are
                                   not reliable.  [BCP, Apr 07] *)
                        0.

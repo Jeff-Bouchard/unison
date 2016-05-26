@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/case.ml *)
-(* Copyright 1999-2016, Benjamin C. Pierce
+(* Copyright 1999-2015, Benjamin C. Pierce 
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ let hasTrailingDots s =
 
 let removeTrailingDots s =
   let len = String.length s in
-  let s' = Bytes.create len in
+  let s' = String.create len in
   let pos = ref (len - 1) in
   let pos' = ref (len - 1) in
   while !pos >= 0 do

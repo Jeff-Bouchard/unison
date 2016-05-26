@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/fileinfo.ml *)
-(* Copyright 1999-2016, Benjamin C. Pierce
+(* Copyright 1999-2015, Benjamin C. Pierce 
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -52,12 +52,12 @@ type t = { typ : typ; inode : int; desc : Props.t; osX : Osx.info}
 let statFn fromRoot fspath path =
   let fullpath = Fspath.concat fspath path in
   let stats = Fs.lstat fullpath in
-  if stats.Unix.LargeFile.st_kind = Unix.S_LNK
-     && fromRoot
+  if stats.Unix.LargeFile.st_kind = Unix.S_LNK 
+     && fromRoot 
      && Path.followLink path
   then begin
     Fswatch.followLink path;
-    try Fs.stat fullpath
+    try Fs.stat fullpath 
     with Unix.Unix_error((Unix.ENOENT | Unix.ENOTDIR),_,_) ->
       raise (Util.Transient (Printf.sprintf
         "Path %s is marked 'follow' but its target is missing"
@@ -77,7 +77,7 @@ let get fromRoot fspath path =
                      fromRoot stats.Unix.LargeFile.st_ctime stats.Unix.LargeFile.st_mtime);
          let typ =
            match stats.Unix.LargeFile.st_kind with
-             Unix.S_REG -> Util.debug "fileinfo+" (fun () -> Util.msg "get: FILE\n"); `FILE
+             Unix.S_REG -> `FILE
            | Unix.S_DIR -> `DIRECTORY
            | Unix.S_LNK ->
                if not fromRoot || Prefs.read symlinksAllowed then

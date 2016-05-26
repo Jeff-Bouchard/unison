@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/bytearray.ml *)
-(* Copyright 1999-2016, Benjamin C. Pierce
+(* Copyright 1999-2015, Benjamin C. Pierce 
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ external unsafe_blit_to_string : t -> int -> string -> int -> int -> unit
 let to_string a =
   let l = length a in
   if l > Sys.max_string_length then invalid_arg "Bytearray.to_string" else
-  let s = Bytes.create l in
+  let s = String.create l in
   unsafe_blit_to_string a 0 s 0 l;
   s
 
@@ -60,7 +60,7 @@ let sub a ofs len =
   then
     invalid_arg "Bytearray.sub"
   else begin
-    let s = Bytes.create len in
+    let s = String.create len in
     unsafe_blit_to_string a ofs s 0 len;
     s
   end

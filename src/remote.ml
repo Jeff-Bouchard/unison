@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/remote.ml *)
-(* Copyright 1999-2016, Benjamin C. Pierce
+(* Copyright 1999-2015, Benjamin C. Pierce 
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -125,7 +125,7 @@ let bufferSize = 16384
    buffer of this size *)
 
 let makeBuffer ch =
-  { channel = ch; buffer = Bytes.create bufferSize;
+  { channel = ch; buffer = String.create bufferSize;
     length = 0; opened = true }
 
 (****)
@@ -450,12 +450,7 @@ let defaultMarshalingFunctions =
      let s = Bytearray.marshal data [Marshal.No_sharing] in
      let l = Bytearray.length s in
      ((s, 0, l) :: rem, l)),
-  (fun buf pos ->
-      try Bytearray.unmarshal buf pos
-      with Failure s -> raise (Util.Fatal (Printf.sprintf 
-"Fatal error during unmarshaling (%s),
-possibly because client and server have been compiled with different\
-versions of the OCaml compiler." s)))
+  (fun buf pos -> Bytearray.unmarshal buf pos)
 
 let makeMarshalingFunctions payloadMarshalingFunctions string =
   let (marshalPayload, unmarshalPayload) = payloadMarshalingFunctions in
@@ -915,16 +910,7 @@ let commandAvailable =
                      BUILDING CONNECTIONS TO THE SERVER
  ****************************************************************************)
 
-let connectionHeader =
-  let (major,minor,patchlevel) =
-    Scanf.sscanf Sys.ocaml_version "%d.%d.%d" (fun x y z -> (x,y,z)) in
-  let compiler =
-    if    major < 4 
-       || major = 4 && minor <= 2
-       || major = 4 && minor = 2 && patchlevel <= 1
-    then "<= 4.01.1"
-    else ">= 4.01.2"
-  in "Unison " ^ Uutil.myMajorVersion ^ " with OCaml " ^ compiler ^ "\n"
+let connectionHeader = "Unison " ^ Uutil.myMajorVersion ^ "\n"
 
 let rec checkHeader conn buffer pos len =
   if pos = len then
@@ -1306,7 +1292,7 @@ let openConnectionStart clroot =
               Prefs.read rshCmd
             else
               shell) in
-          let shellCmdArgs =
+          let shellCmdArgs = 
             (if shell = "ssh" then
               Prefs.read sshargs
             else if shell = "rsh" then
@@ -1422,7 +1408,7 @@ let commandLoop in_ch out_ch =
        match e with
          Util.Fatal "Lost connection with the server" ->
            debug (fun () -> Util.msg "Connection closed by the client\n");
-           (* We prevent new writes and wait for any current write to
+           (* We prevents new writes and wait for any current write to
               terminate.  As we don't have a good way to wait for the
               writer to terminate, we just yield a bit. *)
            let rec wait n =

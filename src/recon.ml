@@ -1,5 +1,5 @@
 (* Unison file synchronizer: src/recon.ml *)
-(* Copyright 1999-2016, Benjamin C. Pierce
+(* Copyright 1999-2015, Benjamin C. Pierce 
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -253,10 +253,10 @@ let shouldCancel path rc1 rc2 root2 =
                       (Int64.of_int (Prefs.read maxSizeThreshold)))
   in
   match actionKind rc1 rc2 with
-    `UPDATE   ->
+    `UPDATE   -> 
      if test `UPDATE then true, "would update a file with noupdate or noupdatepartial set"
      else testSize rc1, "would transfer a file of size greater than maxsizethreshold"
-  | `DELETION ->
+  | `DELETION -> 
      if test `UPDATE then true, "would update a file with noupdate or noupdatepartial set"
      else test `DELETION, "would delete a file with nodeletion or nodeletionpartial set"
   | `CREATION ->
@@ -268,7 +268,7 @@ let filterRi root1 root2 ri =
     Problem _ ->
       ()
   | Different diff ->
-     let cancel,reason =
+     let cancel,reason = 
        match diff.direction with
          Replica1ToReplica2 ->
           shouldCancel (Path.toString ri.path1) diff.rc1 diff.rc2 root2
@@ -276,8 +276,8 @@ let filterRi root1 root2 ri =
           shouldCancel (Path.toString ri.path1) diff.rc2 diff.rc1 root1
        | Conflict _ | Merge ->
           false,""
-     in
-     if cancel
+     in 
+     if cancel 
      then
        diff.direction <- Conflict reason
 
@@ -307,7 +307,7 @@ let overrideReconcilerChoices ris =
 let checkThatPreferredRootIsValid () =
   let test_root predname = function
     | "" | "newer" -> ()
-    | "older" as r ->
+    | "older" as r -> 
         if not (Prefs.read Props.syncModtimes) then
           raise (Util.Transient (Printf.sprintf
                                    "The '%s=%s' preference can only be used with 'times=true'"
@@ -580,49 +580,39 @@ let rec reconcile
       (add_equal counter equals (Absent, Absent), unequals)
   | (Updates (Dir (desc1, children1, propsChanged1, _) as uc1, prevState1),
      Updates (Dir (desc2, children2, propsChanged2, _) as uc2, prevState2)) ->
-       if Pred.test Globals.atomic (Path.toString path) then
-         let action = Conflict "atomic directory" in
-         (equals,
-          Tree.add unequals
-            (Different
-                 {rc1 = update2replicaContent path true ui1 [] uc1 `DIRECTORY;
-                  rc2 = update2replicaContent path true ui2 [] uc2 `DIRECTORY;
+       (* See if the directory itself should have a reconItem *)
+       let dirResult =
+         if propsChanged1 = PropsSame && propsChanged2 = PropsSame then
+           (equals, unequals)
+         else if Props.similar desc1 desc2 then
+           let uc1 = Dir (desc1, [], PropsSame, false) in
+           let uc2 = Dir (desc2, [], PropsSame, false) in
+           (add_equal counter equals (uc1, uc2), unequals)
+         else
+           let action =
+             if propsChanged1 = PropsSame then Replica2ToReplica1
+             else if propsChanged2 = PropsSame then Replica1ToReplica2
+             else Conflict "properties changed on both sides" in
+           (equals,
+            Tree.add unequals
+              (Different
+                 {rc1 = update2replicaContent path false ui1 [] uc1 `DIRECTORY;
+                  rc2 = update2replicaContent path false ui2 [] uc2 `DIRECTORY;
                   direction = action; default_direction = action;
                   errors1 = []; errors2 = []}))
-       else
-         (* See if the directory itself should have a reconItem *)
-         let dirResult =
-           if propsChanged1 = PropsSame && propsChanged2 = PropsSame then
-             (equals, unequals)
-           else if Props.similar desc1 desc2 then
-             let uc1 = Dir (desc1, [], PropsSame, false) in
-             let uc2 = Dir (desc2, [], PropsSame, false) in
-             (add_equal counter equals (uc1, uc2), unequals)
-           else
-             let action =
-               if propsChanged1 = PropsSame then Replica2ToReplica1
-               else if propsChanged2 = PropsSame then Replica1ToReplica2
-               else Conflict "properties changed on both sides" in
-             (equals,
-              Tree.add unequals
-                (Different
-                   {rc1 = update2replicaContent path false ui1 [] uc1 `DIRECTORY;
-                    rc2 = update2replicaContent path false ui2 [] uc2 `DIRECTORY;
-                    direction = action; default_direction = action;
-                    errors1 = []; errors2 = []}))
-         in
-         (* Apply reconcile on children. *)
-         Safelist.fold_left
-           (fun (equals, unequals) (name1,ui1,name2,ui2) ->
-              let (eq, uneq) =
-                reconcile
-                  allowPartial (Path.child path name1) ui1 [] ui2 [] counter
-                  (Tree.enter equals (name1, name2))
-                  (Tree.enter unequals (name1, name2))
-              in
-              (Tree.leave eq, Tree.leave uneq))
-           dirResult
-           (combineChildren children1 children2)
+       in
+       (* Apply reconcile on children. *)
+       Safelist.fold_left
+         (fun (equals, unequals) (name1,ui1,name2,ui2) ->
+           let (eq, uneq) =
+             reconcile
+               allowPartial (Path.child path name1) ui1 [] ui2 [] counter
+               (Tree.enter equals (name1, name2))
+               (Tree.enter unequals (name1, name2))
+           in
+           (Tree.leave eq, Tree.leave uneq))
+         dirResult
+         (combineChildren children1 children2)
   | (Updates (File (desc1,contentsChanged1) as uc1, prev),
      Updates (File (desc2,contentsChanged2) as uc2, _)) ->
        begin match contentsChanged1, contentsChanged2 with
@@ -637,7 +627,7 @@ let rec reconcile
 (* expect this.)                                                             *)
              let uc1' = File(desc1,ContentsSame) in
              let uc2' = File(desc2,ContentsSame) in
-             different uc1' uc2' "properties changed on both sides"
+             different uc1' uc2' "properties changed on both sides" 
                        (oldType prev) equals unequals
        | ContentsSame, ContentsSame when Props.similar desc1 desc2 ->
            (add_equal counter equals (uc1, uc2), unequals)
@@ -732,9 +722,9 @@ let reconcileList allowPartial
   overrideReconcilerChoices sorted;
   (sorted, not (Tree.is_empty equals), dangerous)
 
-(* This is the main function: it takes a list of updateItem lists and,
-   according to the roots and paths of synchronization, builds the
-   corresponding reconItem list.  A second component indicates whether there
+(* This is the main function: it takes a list of updateItem lists and,       
+   according to the roots and paths of synchronization, builds the           
+   corresponding reconItem list.  A second component indicates whether there 
    is any file updated in the same way on both sides. *)
 let reconcileAll ?(allowPartial = false) updatesList =
   Trace.status "Reconciling changes";
