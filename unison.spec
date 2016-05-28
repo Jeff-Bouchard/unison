@@ -24,9 +24,9 @@ cd src
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
-%{__mkdir} -p $RPM_BUILD_ROOT%{_sbindir}
-%{__cp} src/unison $RPM_BUILD_ROOT%{_sbindir}
-%{__cp} src/unison-fsmonitor $RPM_BUILD_ROOT%{_sbindir}
+%{__mkdir} -p $RPM_BUILD_ROOT%{_bindir}
+%{__cp} src/unison $RPM_BUILD_ROOT%{_bindir}
+%{__cp} src/unison-fsmonitor $RPM_BUILD_ROOT%{_bindir}
 
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
@@ -34,8 +34,8 @@ cd src
 %files
 %doc LICENSE
 %defattr(-,root,root,-)
-%{_sbindir}/unison
-%{_sbindir}/unison-fsmonitor
+%{_bindir}/unison
+%{_bindir}/unison-fsmonitor
 
 %changelog
 * Mon Oct 5 2015 Benjamin Pierce <bcpierce00@gmail.com> 2.48.3
